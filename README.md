@@ -1,7 +1,11 @@
 # Jekyll Category Pagination
 
-Simple plugin to generate pages for specific categories.
-Categories has to be defined in your `_config.yml`
+Simple plugin to generate pages for specific categories. Categories has to be
+defined in your `_config.yml`.
+
+## Installation
+
+Install paginator.rb in your `_plugins` directory.
 
 ## Parameters
 
