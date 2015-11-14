@@ -5,9 +5,12 @@ defined in your `_config.yml`.
 
 ## Installation
 
-Install paginator.rb in your `_plugins` directory.
+Install `paginator.rb` in your `_plugins` directory, add some layout and change
+your configuration as described below.
 
 ## Parameters
+
+Set your config options within 'categories', the following options can be used:
 
 - 'pagination' how many posts per page
 - 'layout' which layout to use
@@ -17,6 +20,8 @@ Install paginator.rb in your `_plugins` directory.
   for sorting)
 
 ## Template Data
+
+Within your template you can use the following information.
 
 - 'page.posts' list of posts
 - 'page.nextUrl' url to next page, only available if next page exists
