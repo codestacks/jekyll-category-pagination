@@ -1,7 +1,13 @@
 # Jekyll Category Pagination
 
-Simple plugin to generate pages for specific categories. Categories has to be
-defined in your `_config.yml`.
+Simple plugin to generate numbered pages for specific categories. Categories
+has to be defined in your `_config.yml` and will be generated as single html
+files like `categories/<category>/page<N>.html`.
+
+You can read more about this plugin in "[Category Pagination in Jekyll](https://blog.codestack.de/2015/05/02/category-pagination-in-jekyll.html)".
+Furthermore this plugin can be used to create infinite scrolling blogs in
+Jekyll, read more about how to do this in "[SEO Friendly Infinite Scrolling with Jekyll](https://blog.codestack.de/2015/05/17/seo-friendly-infinite-scroll.html)".
+
 
 ## Installation
 
@@ -10,28 +16,32 @@ your configuration as described below.
 
 ## Parameters
 
-Set your config options within 'categories', the following options can be used:
+Set your config options in `_config.yml` within 'categories', the following options can be used:
 
-- 'pagination' how many posts per page
-- 'layout' which layout to use
-- 'directory' target directory of generated pages
-- 'details' list of categories to generate pages for, each one can have
-  title, layout, pagination and weight (which can be used within your navigation template
-  for sorting)
+- `pagination` how many posts per page, default is 5
+- `layout` which layout file from your `_layouts` folder to use,
+  default is 'category.html'
+- `directory` target directory of generated pages, default is 'categories'
+- `details` list of categories to generate pages for, each one can have
+  `title`, `layout`, `pagination` and `weight` (which can be used within your
+  navigation template for sorting)
 
 ## Template Data
 
-Within your template you can use the following information.
+Within your template you can use the following information. Templates has do be
+placed in your `_layouts` folder and should be specified in your configuration.
+For example `layouts/category.html` has to be `layout: category.html` beneath
+the 'categories:' key in your `_config.yml` file.
 
-- 'page.posts' list of posts
-- 'page.nextUrl' url to next page, only available if next page exists
-- 'page.prevUrl' url to previous page, only available if previous page exists
-- 'page.posts' number of posts
-- 'page.category' your category
-- 'page.weight' your weight
-- 'page.title' your title
-- 'page.number' the current page number
-- 'page.more' boolean, true if there is one more site
+- `page.posts` list of posts
+- `page.nextUrl` url to next page, only available if next page exists
+- `page.prevUrl` url to previous page, only available if previous page exists
+- `page.posts` number of posts
+- `page.category` your category
+- `page.weight` your weight
+- `page.title` your title
+- `page.number` the current page number
+- `page.more` boolean, true if there is one more site
 
 ## Example Configuration
 
@@ -57,7 +67,9 @@ the categories 'cat1', 'cat2' and 'cat3'.
 
 ## Example Template
 
-Add the following template to your `_layout` folder.
+Add the following template to your `_layouts` folder and specify this in
+your configuration, for example `_layouts/category.html` has to be specified
+as `layout: category.html` beneath the 'categories:' key.
 
 ``` html
 ---
