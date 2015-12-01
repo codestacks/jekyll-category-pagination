@@ -8,6 +8,10 @@ You can read more about this plugin in "[Category Pagination in Jekyll](https://
 Furthermore this plugin can be used to create infinite scrolling blogs in
 Jekyll, read more about how to do this in "[SEO Friendly Infinite Scrolling with Jekyll](https://blog.codestack.de/2015/05/17/seo-friendly-infinite-scroll.html)".
 
+This plugin will generate one folder for each configured category within the
+main folder 'categories'. Each category folder contains
+files like page1.html, page2.html, and so on. In addition to that, a virtual
+category 'all' is added, which contains all posts with pagination.
 
 ## Installation
 
@@ -33,15 +37,15 @@ placed in your `_layouts` folder and should be specified in your configuration.
 For example `layouts/category.html` has to be `layout: category.html` beneath
 the 'categories:' key in your `_config.yml` file.
 
-- `page.posts` list of posts
-- `page.nextUrl` url to next page, only available if next page exists
-- `page.prevUrl` url to previous page, only available if previous page exists
-- `page.posts` number of posts
-- `page.category` your category
-- `page.weight` your weight
-- `page.title` your title
-- `page.number` the current page number
-- `page.more` boolean, true if there is one more site
+- 'page.posts' list of posts
+- 'page.nextUrl' url to next page, only available if next page exists
+- 'page.prevUrl' url to previous page, only available if previous page exists
+- 'page.category' your category
+- 'page.weight' your weight
+- 'page.title' your title
+- 'page.number' the current page number
+- 'page.pages' the maximum number of pages
+- 'page.more' boolean, true if there is one more site
 
 ## Example Configuration
 
@@ -52,10 +56,12 @@ the categories 'cat1', 'cat2' and 'cat3'.
 ``` yml
   categories:
     pagination: 5
+    generate_all: false
     directory: categories
     details:
       cat1:
         title: Cat1
+        pagination: 10
         weight: 25
       cat2:
         title: Cat2
@@ -95,4 +101,24 @@ layout: default
     <a class="page-next" href="{{ page.nextUrl | prepend: site.baseurl }}">next</a>
     {% endif %}
 </div>
+```
+
+## Navigation
+
+Each page gets into the pages list which is used for navigation generation. To
+avoid unintended entries, check for titles and page numbers. You can do
+something like this:
+
+``` html
+<ul>
+{% for page in pages %}
+{% if page.title %}
+{% if page.number == nil or page.number == 1 %}
+<li>
+<a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+</li>
+{% endif %}
+{% endif %}
+{% endfor %}
+</ul>
 ```

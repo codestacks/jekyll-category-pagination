@@ -3,6 +3,7 @@
 # Parameters:
 # - 'pagination' how many posts per page
 # - 'layout' which layout to use
+# - 'generate_all' boolean, true if every category should be generated
 # - 'directory' target directory of generated pages
 # - 'details' list of categories to generate pages for, each one can have
 #   title, layout, pagination and weight (which can be used within your navigation template
@@ -12,11 +13,11 @@
 # - 'page.posts' list of posts
 # - 'page.nextUrl' url to next page, only available if next page exists
 # - 'page.prevUrl' url to previous page, only available if previous page exists
-# - 'page.posts' number of posts
 # - 'page.category' your category
 # - 'page.weight' your weight
 # - 'page.title' your title
 # - 'page.number' the current page number
+# - 'page.pages' the maximum number of pages
 # - 'page.more' boolean, true if there is one more site
 #
 # Example configuration:
@@ -27,6 +28,7 @@
 #     details:
 #       cat1:
 #         title: Cat1
+#         pagination: 10
 #         weight: 25
 #       cat2:
 #         title: Cat2
@@ -39,7 +41,7 @@ module Jekyll
   # Page class it-self, contains data through this specific list of posts
   # like nextUrl, prevUrl, number of posts or page number
   class PostSubSetPage < Page
-      def initialize(site, base, dir, detail, page, posts, more)
+      def initialize(site, base, dir, detail, page, posts, more, pages)
           @site = site
           @base = base
           @dir = dir
@@ -53,6 +55,7 @@ module Jekyll
           self.data['title'] = detail['title']
           self.data['posts'] = posts
           self.data['number'] = page
+          self.data['pages'] = pages
           self.data['more'] = more
           self.data['sitemap'] = false
 
@@ -86,6 +89,9 @@ module Jekyll
         # Put each page file in a subfolder of dir
         dir = File.join(dir, category)
 
+        # Calculate number of pages
+        pages = (detail['pagination'] / list.length).ceil
+
         # Iterate through all posts
         number = 1
         counter = 0
@@ -94,13 +100,13 @@ module Jekyll
           posts.push(post)
           counter += 1
           if posts.length == detail['pagination']
-            site.pages << PostSubSetPage.new(site, site.source, dir, detail, number, posts, counter < list.length)
+            site.pages << PostSubSetPage.new(site, site.source, dir, detail, number, posts, counter < list.length, pages)
             number += 1
             posts = []
           end
         end
         if posts.length != 0
-          site.pages << PostSubSetPage.new(site, site.source, dir, detail, number, posts, false)
+          site.pages << PostSubSetPage.new(site, site.source, dir, detail, number, posts, false, pages)
         end
     end
 
@@ -111,6 +117,7 @@ module Jekyll
         # Read some configurations
         config = site.config['categories'] || {}
         dir = config['directory'] || 'categories'
+        generateAll = config['generate_all'] || false
         details = config['details'] || {}
 
         # Keep generated files
@@ -118,7 +125,9 @@ module Jekyll
 
         # Generate pages per category
         categories.each do |category, list|
-          self.generateList(site, list, dir, category, details, config)
+          if details[category] || generateAll
+            self.generateList(site, list, dir, category, details, config)
+          end
         end
 
         # Generate pages for all
