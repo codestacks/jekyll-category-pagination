@@ -112,7 +112,7 @@ module Jekyll
 
     def generate(site)
         categories = {}
-        site.posts.each {|p| p.categories.each {|c| (categories[c] ||= []) << p } }
+        site.documents.each {|p| p.data['categories'].each {|c| (categories[c] ||= []) << p } }
 
         # Read some configurations
         config = site.config['categories'] || {}
@@ -131,7 +131,7 @@ module Jekyll
         end
 
         # Generate pages for all
-        self.generateList(site, site.posts, dir, 'all', details, config)
+        self.generateList(site, site.documents, dir, 'all', details, config)
     end
   end
 end
