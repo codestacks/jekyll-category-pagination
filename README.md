@@ -25,7 +25,7 @@ Set your config options in `_config.yml` within 'categories', the following opti
 - `pagination` how many posts per page, default is 5
 - `layout` which layout file from your `_layouts` folder to use,
   default is 'category.html'
-- `directory` target directory of generated pages, default is 'categories'
+- `directory` target directory of generated pages, use '.' to place them directly in `_site`
 - `details` list of categories to generate pages for, each one can have
   `title`, `layout`, `pagination` and `weight` (which can be used within your
   navigation template for sorting)

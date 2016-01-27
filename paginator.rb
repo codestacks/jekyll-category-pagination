@@ -4,7 +4,7 @@
 # - 'pagination' how many posts per page
 # - 'layout' which layout to use
 # - 'generate_all' boolean, true if every category should be generated
-# - 'directory' target directory of generated pages
+# - 'directory' target directory of generated pages, use . to place generated pages in root
 # - 'details' list of categories to generate pages for, each one can have
 #   title, layout, pagination and weight (which can be used within your navigation template
 #   for sorting)
@@ -121,7 +121,9 @@ module Jekyll
         details = config['details'] || {}
 
         # Keep generated files
-        site.config['keep_files'] << dir unless site.config['keep_files'].include?(dir)
+        if dir != '.'
+          site.config['keep_files'] << dir unless site.config['keep_files'].include?(dir)
+        end
 
         # Generate pages per category
         categories.each do |category, list|
