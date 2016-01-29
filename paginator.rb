@@ -133,7 +133,9 @@ module Jekyll
         end
 
         # Generate pages for all
-        self.generateList(site, site.posts.docs, dir, 'all', details, config)
+        if generateAll
+          self.generateList(site, site.posts.docs, dir, 'all', details, config)
+        endif
     end
   end
 end
