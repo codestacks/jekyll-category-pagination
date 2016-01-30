@@ -11,7 +11,7 @@ Jekyll, read more about how to do this in "[SEO Friendly Infinite Scrolling with
 This plugin will generate one folder for each configured category within the
 main folder 'categories'. Each category folder contains
 files like page1.html, page2.html, and so on. In addition to that, a virtual
-category 'all' is added, which contains all posts with pagination.
+category `all` is added, which contains all posts with pagination.
 
 ## Installation
 
@@ -20,15 +20,19 @@ your configuration as described below.
 
 ## Parameters
 
-Set your config options in `_config.yml` within 'categories', the following options can be used:
+Set your config options in `_config.yml` within 'categories'. The category `all`
+is reserved by pagination for all posts, redefine this with
+`category_for_all_posts`. The following options can be used:
 
 - `pagination` how many posts per page, default is 5
 - `layout` which layout file from your `_layouts` folder to use,
   default is 'category.html'
-- `directory` target directory of generated pages, use '.' to place them directly in `_site`
+- `directory` target directory of generated pages, use '.' to place them
+  directly in `_site`
 - `details` list of categories to generate pages for, each one can have
   `title`, `layout`, `pagination` and `weight` (which can be used within your
   navigation template for sorting)
+- `generate_all` used to generate all categories or categories within `details`
 
 ## Template Data
 
@@ -59,6 +63,7 @@ the categories 'cat1', 'cat2' and 'cat3'.
     generate_all: false
     directory: categories
     details:
+      all: {}
       cat1:
         title: Cat1
         pagination: 10

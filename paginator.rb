@@ -117,6 +117,7 @@ module Jekyll
         # Read some configurations
         config = site.config['categories'] || {}
         dir = config['directory'] || 'categories'
+        allName = config['category_for_all_posts'] || 'all'
         generateAll = config['generate_all'] || false
         details = config['details'] || {}
 
@@ -127,15 +128,15 @@ module Jekyll
 
         # Generate pages per category
         categories.each do |category, list|
-          if details[category] || generateAll
+          if category != allName && (details[category] || generateAll)
             self.generateList(site, list, dir, category, details, config)
           end
         end
 
         # Generate pages for all
-        if generateAll
-          self.generateList(site, site.posts.docs, dir, 'all', details, config)
-        endif
+        if details[allName] || generateAll
+          self.generateList(site, site.posts.docs, dir, allName, details, config)
+        end
     end
   end
 end
