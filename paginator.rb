@@ -45,7 +45,11 @@ module Jekyll
           @site = site
           @base = base
           @dir = dir
-          @name = "page#{page}.html"
+          if (page == 1)
+              @name = "index.html"
+          else
+              @name = "page#{page}.html"
+          end
 
           # Define data which can be used in category.html
           self.process(@name)
@@ -67,7 +71,12 @@ module Jekyll
           # Add prev button for navigation
           if page > 1
               prevNumber = page - 1
-              self.data['prevUrl'] = File.join('', dir, "page#{prevNumber}.html")
+              if (page == 2)
+                  page_file = "index.html"
+              else 
+                  page_file = "page#{prevNumber}.html" 
+              end
+              self.data['prevUrl'] = File.join('', dir, page_file)
           end
       end
   end
@@ -87,7 +96,9 @@ module Jekyll
         list = list.sort! { |a,b| b.date <=> a.date }
 
         # Put each page file in a subfolder of dir
-        dir = File.join(dir, category)
+        if not details[category]['default'] 
+          dir = File.join(dir, category)
+        end
 
         # Calculate number of pages
         pages = (detail['pagination'] / list.length).ceil
