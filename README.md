@@ -33,6 +33,8 @@ is reserved by pagination for all posts, redefine this with
   `title`, `layout`, `pagination` and `weight` (which can be used within your
   navigation template for sorting)
 - `generate_all` used to generate all categories or categories within `details`
+- `first_page` name of first_page, default would be `page1.html`, you can use
+  this parameter to name the first page `index.html`
 
 ## Template Data
 

@@ -3,10 +3,11 @@
 # Parameters:
 # - 'pagination' how many posts per page
 # - 'layout' which layout to use
+# - 'first_page' name of first page, default would be page1.html
 # - 'generate_all' boolean, true if every category should be generated
 # - 'directory' target directory of generated pages, use . to place generated pages in root
 # - 'details' list of categories to generate pages for, each one can have
-#   title, layout, pagination and weight (which can be used within your navigation template
+#   title, layout, pagination, first_page and weight (which can be used within your navigation template
 #   for sorting)
 #
 # Template data:
@@ -41,15 +42,19 @@ module Jekyll
   # Page class it-self, contains data through this specific list of posts
   # like nextUrl, prevUrl, number of posts or page number
   class PostSubSetPage < Page
+      def getPageName(number, config)
+          if (number == 1 && config['first_page'])
+              @name = config['first_page']
+          else
+              @name = "page#{number}.html"
+          end
+      end
+
       def initialize(site, base, dir, detail, page, posts, more, pages)
           @site = site
           @base = base
           @dir = dir
-          if (page == 1)
-              @name = "index.html"
-          else
-              @name = "page#{page}.html"
-          end
+          @name = self.getPageName(page, detail)
 
           # Define data which can be used in category.html
           self.process(@name)
@@ -66,17 +71,15 @@ module Jekyll
           # Add next button for navigation
           if more
             nextNumber = page + 1
-            self.data['nextUrl'] = File.join('', dir, "page#{nextNumber}.html")
+            pageName = self.getPageName(nextNumber, detail)
+            self.data['nextUrl'] = File.join('', dir, pageName)
           end
+
           # Add prev button for navigation
           if page > 1
               prevNumber = page - 1
-              if (page == 2)
-                  page_file = "index.html"
-              else 
-                  page_file = "page#{prevNumber}.html" 
-              end
-              self.data['prevUrl'] = File.join('', dir, page_file)
+              pageName = self.getPageName(prevNumber, detail)
+              self.data['prevUrl'] = File.join('', dir, pageName)
           end
       end
   end
@@ -91,12 +94,13 @@ module Jekyll
         detail['pagination'] = detail['pagination'] || config['pagination'] || 5
         detail['category'] = category
         detail['layout'] = detail['layout'] || config['layout'] || 'category.html'
+        detail['first_page'] = detail['first_page'] || config['first_page'] || false
 
         # Sort by date descending
         list = list.sort! { |a,b| b.date <=> a.date }
 
         # Put each page file in a subfolder of dir
-        if not details[category]['default'] 
+        if not detail['default']
           dir = File.join(dir, category)
         end
 
