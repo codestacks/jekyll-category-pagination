@@ -44,9 +44,9 @@ module Jekyll
   class PostSubSetPage < Page
       def getPageName(number, config)
           if (number == 1 && config['first_page'])
-              @name = config['first_page']
+              return config['first_page']
           else
-              @name = "page#{number}.html"
+              return "page#{number}.html"
           end
       end
 
@@ -72,6 +72,7 @@ module Jekyll
           if more
             nextNumber = page + 1
             pageName = self.getPageName(nextNumber, detail)
+            self.data['nextNumber'] = nextNumber
             self.data['nextUrl'] = File.join('', dir, pageName)
           end
 
@@ -79,6 +80,7 @@ module Jekyll
           if page > 1
               prevNumber = page - 1
               pageName = self.getPageName(prevNumber, detail)
+              self.data['prevNumber'] = prevNumber
               self.data['prevUrl'] = File.join('', dir, pageName)
           end
       end
