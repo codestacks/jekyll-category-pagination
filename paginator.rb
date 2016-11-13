@@ -107,7 +107,7 @@ module Jekyll
         end
 
         # Calculate number of pages
-        pages = (detail['pagination'] / list.length).ceil
+        pages = (list.length / detail['pagination']).ceil
 
         # Iterate through all posts
         number = 1
